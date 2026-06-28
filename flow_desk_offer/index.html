@@ -31,7 +31,6 @@
     overflow-x: hidden;
   }
 
-  /* NAV */
   nav {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -70,7 +69,6 @@
   }
   .nav-cta:hover { opacity: 0.85; }
 
-  /* HERO */
   .hero {
     background: var(--dark);
     color: white;
@@ -158,7 +156,6 @@
   }
   .hero-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
-  /* STATS */
   .stats {
     display: flex;
     justify-content: center;
@@ -195,7 +192,6 @@
     letter-spacing: 0.08em;
   }
 
-  /* SECTIONS */
   .section {
     max-width: 680px;
     margin: 0 auto;
@@ -228,7 +224,6 @@
     max-width: 520px;
   }
 
-  /* PROBLEM CARDS */
   .problem-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -258,7 +253,6 @@
     line-height: 1.5;
   }
 
-  /* FLOW */
   .flow-wrap {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -340,7 +334,6 @@
     letter-spacing: 0.04em;
   }
 
-  /* USE CASES */
   .usecase-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -371,7 +364,6 @@
     line-height: 1.55;
   }
 
-  /* MODEL */
   .model-card {
     background: var(--dark);
     border-radius: 16px;
@@ -433,7 +425,6 @@
     font-weight: 500;
   }
 
-  /* PRICING */
   .pricing-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -543,7 +534,6 @@
     color: var(--text);
   }
 
-  /* CTA SECTION */
   .cta-section {
     background: var(--dark);
     padding: 60px 24px;
@@ -584,14 +574,12 @@
   }
   .cta-btn:hover { opacity: 0.9; }
 
-  /* DIVIDER */
   .divider {
     border: none;
     border-top: 1px solid var(--border);
     margin: 0;
   }
 
-  /* FOOTER */
   footer {
     text-align: center;
     padding: 28px 24px;
@@ -603,7 +591,6 @@
 
   footer a { color: var(--accent); text-decoration: none; }
 
-  /* MOBILE */
   @media (max-width: 520px) {
     .problem-grid { grid-template-columns: 1fr; }
     .usecase-grid { grid-template-columns: 1fr; }
@@ -618,13 +605,11 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="logo">Flow<span>Desk</span></a>
   <a href="#kontakt" class="nav-cta">Mám záujem →</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow">Pre firmy 1–50 ľudí</div>
   <h1>Koniec chaosu<br>v <em>komunikácii</em> tímu</h1>
@@ -649,7 +634,6 @@
 
 <hr class="divider">
 
-<!-- PROBLÉM -->
 <section class="section">
   <div class="section-label">Poznáte to?</div>
   <h2>Malý tím, veľký chaos</h2>
@@ -681,7 +665,6 @@
 
 <hr class="divider">
 
-<!-- RIEŠENIE - FLOW -->
 <section class="section">
   <div class="section-label">Riešenie</div>
   <h2>Jeden formulár.<br>Všetko sa deje samo.</h2>
@@ -736,7 +719,6 @@
     </div>
   </div>
 
-  <!-- VIDEO -->
   <div style="margin-top: 32px; position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; border:1px solid var(--border);">
     <iframe
       src="https://www.loom.com/embed/be4f62d6d7454d858feb799e3a4b7e2c"
@@ -745,12 +727,10 @@
       style="position:absolute;top:0;left:0;width:100%;height:100%;">
     </iframe>
   </div>
-
 </section>
 
 <hr class="divider">
 
-<!-- USE CASES -->
 <section class="section">
   <div class="section-label">Príklady použitia</div>
   <h2>Funguje pre rôzne<br>typy tímov</h2>
@@ -782,7 +762,6 @@
 
 <hr class="divider">
 
-<!-- MODEL -->
 <section class="section">
   <div class="section-label">Ako spolupracujeme</div>
   <h2>Nastavíme, odovzdáme,<br>odídeme.</h2>
@@ -814,7 +793,6 @@
 
 <hr class="divider">
 
-<!-- PRICING -->
 <section class="section">
   <div class="section-label">Ceny</div>
   <h2>Jednorazová platba.<br>Žiadne skryté poplatky.</h2>
@@ -850,11 +828,10 @@
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section" id="kontakt">
   <h2>Dohodnime si<br>hovor zadarmo</h2>
   <p>30 minút, bez záväzkov. Zistíme, či a ako vám vieme pomôcť.</p>
-  <a href="mailto:michal.sajko@gmail.com" class="cta-btn">Napísať nám →</a>
+  <a href="https://flow-desk-onboarding.netlify.app" class="cta-btn">Napísať nám →</a>
 </section>
 
 <footer>
