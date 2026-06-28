@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowDesk – Automatizácia pre váš tím</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --border: #e8e6e0;
+    --accent: #2d6a4f;
+    --accent-light: #e8f5ee;
+    --text: #1a1a18;
+    --muted: #6b6b65;
+    --tag-bg: #eef7f2;
+    --tag-border: #b7dfc8;
+    --dark: #111310;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    background: var(--dark);
+    color: white;
+    padding: 64px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(45,106,79,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 7vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+    color: white;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: #4ade80;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.55);
+    max-width: 440px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    background: #4ade80;
+    color: #111310;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .hero-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 56px;
+    padding-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 0 20px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 4vw, 32px);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 520px;
+  }
+
+  /* PROBLEM CARDS */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .problem-icon { font-size: 20px; margin-bottom: 10px; }
+
+  .problem-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .problem-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* FLOW */
+  .flow-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .flow-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    background: #fafaf8;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .flow-steps {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .flow-step:last-child { border-bottom: none; }
+
+  .flow-step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .flow-step-content { flex: 1; }
+
+  .flow-step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .flow-step-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .flow-step-tools {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .tool-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* USE CASES */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .usecase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .usecase-card:hover { border-color: var(--tag-border); }
+
+  .usecase-icon { font-size: 22px; margin-bottom: 10px; }
+
+  .usecase-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .usecase-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* MODEL */
+  .model-card {
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 28px 24px;
+    color: white;
+  }
+
+  .model-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .model-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .model-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .model-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .model-step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(74,222,128,0.15);
+    border: 1px solid rgba(74,222,128,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #4ade80;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .model-step-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+  }
+
+  .model-step-text strong {
+    color: white;
+    font-weight: 500;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .pricing-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+  }
+
+  .pricing-card.featured {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .pricing-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--muted);
+  }
+
+  .pricing-card.featured .pricing-name { color: rgba(255,255,255,0.7); }
+
+  .pricing-price {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: "lnum" 1, "tnum" 1;
+  }
+
+  .pricing-price .currency {
+    font-size: 0.5em;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-right: 2px;
+    opacity: 0.7;
+    position: relative;
+    top: -3px;
+  }
+
+  .pricing-period {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .pricing-card.featured .pricing-period { color: rgba(255,255,255,0.6); }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pricing-features li {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.4;
+  }
+
+  .pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.8); }
+
+  .pricing-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pricing-card.featured .pricing-features li::before { color: #a7f3d0; }
+
+  .pricing-custom {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    grid-column: span 2;
+  }
+
+  .pricing-custom p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .pricing-custom strong {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--dark);
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 5vw, 40px);
+    color: white;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+
+  .cta-section p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 32px;
+    line-height: 1.7;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: #4ade80;
+    color: #111310;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.9; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 28px 24px;
+    color: var(--muted);
+    font-size: 13px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* MOBILE */
+  @media (max-width: 520px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-custom { grid-column: span 1; }
+    .stats { gap: 20px; }
+    .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; }
+    .stat:last-child { border-bottom: none; padding-bottom: 0; }
+    nav .nav-cta { font-size: 12px; padding: 8px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Flow<span>Desk</span></a>
+  <a href="#kontakt" class="nav-cta">Mám záujem →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Pre firmy 1–50 ľudí</div>
+  <h1>Koniec chaosu<br>v <em>komunikácii</em> tímu</h1>
+  <p class="hero-sub">Prepojíme váš formulár, task manager a chat do jedného automatizovaného systému. Jednorazovo. Bez mesačných poplatkov.</p>
+  <a href="#kontakt" class="hero-btn">Chcem vedieť viac →</a>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">1×</div>
+      <div class="stat-label">platba, nie predplatné</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3–5</div>
+      <div class="stat-label">dní implementácia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">vaše vlastníctvo</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROBLÉM -->
+<section class="section">
+  <div class="section-label">Poznáte to?</div>
+  <h2>Malý tím, veľký chaos</h2>
+  <p class="section-desc">Požiadavky chodia emailom, cez chat, ústne. Nikto nevie čo je kde, kto čo rieši a čo sa deje.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon">📨</div>
+      <div class="problem-title">Požiadavky sa strácajú</div>
+      <div class="problem-text">Email tu, správa tam, post-it niekde. Nič nie je na jednom mieste.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🔁</div>
+      <div class="problem-title">Manuálne kopírovanie</div>
+      <div class="problem-text">Niekto prepisuje požiadavky z emailu do tabuľky, potom do chatu.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">❓</div>
+      <div class="problem-title">Nikto nevie čo sa deje</div>
+      <div class="problem-text">"Riešiš to ty?" "Posunul sa ticket?" "Kedy bude hotové?"</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">⏰</div>
+      <div class="problem-title">Čas míňaný na zisťovanie</div>
+      <div class="problem-text">Namiesto práce riešite kde čo je a kto za čo zodpovedá.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RIEŠENIE - FLOW -->
+<section class="section">
+  <div class="section-label">Riešenie</div>
+  <h2>Jeden formulár.<br>Všetko sa deje samo.</h2>
+  <p class="section-desc">Nastavíme vám automatizovaný systém ktorý prepojí nástroje čo už používate — alebo odporučíme tie správne.</p>
+
+  <div class="flow-wrap">
+    <div class="flow-header">Ako to funguje</div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-icon">📝</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Niekto vyplní formulár</div>
+          <div class="flow-step-desc">Zákazník, kolega alebo externý partner nahlási požiadavku cez jednoduchý online formulár.</div>
+          <div class="flow-step-tools">
+            <span class="tool-tag">Google Forms</span>
+            <span class="tool-tag">Jira Forms</span>
+            <span class="tool-tag">Typeform</span>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-icon">📋</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Automaticky vznikne úloha</div>
+          <div class="flow-step-desc">Bez ľudského zásahu sa vytvorí ticket v task manageri — s menom, popisom, prioritou.</div>
+          <div class="flow-step-tools">
+            <span class="tool-tag">Trello</span>
+            <span class="tool-tag">Jira</span>
+            <span class="tool-tag">Excel</span>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🔔</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Tím dostane notifikáciu</div>
+          <div class="flow-step-desc">Do firemného chatu príde správa — kto nahlásil, čo a s akou prioritou.</div>
+          <div class="flow-step-tools">
+            <span class="tool-tag">Slack</span>
+            <span class="tool-tag">Google Chat</span>
+            <span class="tool-tag">Email</span>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-icon">🔄</div>
+        <div class="flow-step-content">
+          <div class="flow-step-title">Každý update ide do vlákna</div>
+          <div class="flow-step-desc">Keď sa stav tiketu zmení, odpoveď príde automaticky do vlákna pôvodnej správy. Žiadny chaos, všetko pohromade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div style="margin-top: 32px; position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; border:1px solid var(--border);">
+    <iframe
+      src="https://www.loom.com/embed/be4f62d6d7454d858feb799e3a4b7e2c"
+      frameborder="0"
+      allowfullscreen
+      style="position:absolute;top:0;left:0;width:100%;height:100%;">
+    </iframe>
+  </div>
+
+</section>
+
+<hr class="divider">
+
+<!-- USE CASES -->
+<section class="section">
+  <div class="section-label">Príklady použitia</div>
+  <h2>Funguje pre rôzne<br>typy tímov</h2>
+  <p class="section-desc">Systém je flexibilný — nastavíme ho presne podľa toho, čo váš tím potrebuje.</p>
+
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <div class="usecase-icon">🚨</div>
+      <div class="usecase-title">Incident management</div>
+      <div class="usecase-text">IT tímy, e-shopy, SaaS firmy — okamžité hlásenie a sledovanie incidentov.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">📋</div>
+      <div class="usecase-title">SLA požiadavky</div>
+      <div class="usecase-text">Sledovanie požiadaviek od zákazníkov s jasnými stavmi a zodpovednosťou.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">✅</div>
+      <div class="usecase-title">Interné úlohy</div>
+      <div class="usecase-text">Tím si navzájom zadáva úlohy cez formulár — všetko evidované, nič sa nestratí.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">🤝</div>
+      <div class="usecase-title">Externá spolupráca</div>
+      <div class="usecase-text">Partneri, dodávatelia alebo zákazníci posielajú požiadavky cez formulár priamo do vášho systému.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MODEL -->
+<section class="section">
+  <div class="section-label">Ako spolupracujeme</div>
+  <h2>Nastavíme, odovzdáme,<br>odídeme.</h2>
+  <p class="section-desc">Žiadna viazanosť. Systém je váš od prvého dňa.</p>
+
+  <div class="model-card">
+    <h3>Jednorazová implementácia</h3>
+    <p>Nastavíme všetko na vašich účtoch. Vy ste vlastníkmi — nie my.</p>
+    <div class="model-steps">
+      <div class="model-step">
+        <div class="model-step-num">1</div>
+        <div class="model-step-text"><strong>Úvodný hovor (30 min, zadarmo)</strong> — zistíme čo potrebujete a navrhneme riešenie.</div>
+      </div>
+      <div class="model-step">
+        <div class="model-step-num">2</div>
+        <div class="model-step-text"><strong>Implementácia (3–5 dní)</strong> — nastavíme celý systém na vašich účtoch.</div>
+      </div>
+      <div class="model-step">
+        <div class="model-step-num">3</div>
+        <div class="model-step-text"><strong>Odovzdanie + zaškolenie</strong> — ukážeme vám ako systém funguje a odovzdáme manuál.</div>
+      </div>
+      <div class="model-step">
+        <div class="model-step-num">4</div>
+        <div class="model-step-text"><strong>Idete sami</strong> — systém je váš. Ak niekedy niečo potrebujete, sme k dispozícii za transparentnú hodinovú sadzbu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRICING -->
+<section class="section">
+  <div class="section-label">Ceny</div>
+  <h2>Jednorazová platba.<br>Žiadne skryté poplatky.</h2>
+  <p class="section-desc">Platíte raz za implementáciu. Ďalej vás to nestojí nič — okrem nástrojov ktoré už používate.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">Starter</div>
+      <div class="pricing-price"><span class="currency">€</span>490</div>
+      <div class="pricing-period">jednorazovo</div>
+      <ul class="pricing-features">
+        <li>1 automatizovaný flow</li>
+        <li>Prepojenie 2–3 nástrojov</li>
+        <li>Základná dokumentácia</li>
+        <li>Zaškolenie (1 hod)</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-name">Growth</div>
+      <div class="pricing-price"><span class="currency">€</span>990</div>
+      <div class="pricing-period">jednorazovo</div>
+      <ul class="pricing-features">
+        <li>Až 3 automatizované flows</li>
+        <li>Prepojenie 3–5 nástrojov</li>
+        <li>Kompletná dokumentácia</li>
+        <li>Zaškolenie tímu (2 hod)</li>
+      </ul>
+    </div>
+    <div class="pricing-custom">
+      <p>Väčší projekt alebo špecifické požiadavky?</p>
+      <strong>Dohodneme cenu individuálne →</strong>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="kontakt">
+  <h2>Dohodnime si<br>hovor zadarmo</h2>
+  <p>30 minút, bez záväzkov. Zistíme, či a ako vám vieme pomôcť.</p>
+  <a href="mailto:michal.sajko@gmail.com" class="cta-btn">Napísať nám →</a>
+</section>
+
+<footer>
+  <p>© 2026 FlowDesk · <a href="mailto:michal.sajko@gmail.com">michal.sajko@gmail.com</a> · <a href="tel:+421914703355">0914 703 355</a></p>
+  <p style="margin-top:6px;font-size:11px;opacity:0.5;">Jednorazová implementácia workflow automatizácie pre malé firmy</p>
+</footer>
+
+</body>
+</html>
