@@ -57,6 +57,22 @@
   }
   .logo span { color: var(--accent); }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--text); }
+
   .nav-cta {
     background: var(--accent);
     color: white;
@@ -388,6 +404,98 @@
     line-height: 1.55;
   }
 
+  /* CASE STUDY TEASER */
+  .casestudy-card {
+    background: var(--accent-light);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .casestudy-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--accent);
+  }
+
+  .casestudy-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .casestudy-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .casestudy-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    line-height: 1.25;
+  }
+
+  .casestudy-card h3 em { font-style: normal; color: var(--accent); }
+
+  .casestudy-card > p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.65;
+    max-width: 52ch;
+  }
+
+  .casestudy-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .casestudy-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--surface);
+    border: 1px solid var(--accent-border);
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 5px;
+    letter-spacing: 0.03em;
+  }
+
+  .casestudy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 11px 24px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .casestudy-btn:hover { background: var(--accent-mid); transform: translateY(-2px); }
+  .casestudy-btn svg { transition: transform 0.2s; }
+  .casestudy-btn:hover svg { transform: translateX(3px); }
+
   /* MODEL CARD */
   .model-card {
     background: var(--accent-light);
@@ -650,6 +758,8 @@
     .stat { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
     .stat:last-child { border-bottom: none; padding-bottom: 0; }
     nav .nav-cta { font-size: 12px; padding: 8px 14px; }
+    .nav-right { gap: 12px; }
+    .nav-link { display: none; }
   }
 </style>
 </head>
@@ -657,7 +767,10 @@
 
 <nav>
   <a href="#" class="logo">Flow<span>Desk</span></a>
-  <a href="#kontakt" class="nav-cta">Mám záujem →</a>
+  <div class="nav-right">
+    <a href="/case-study.html" class="nav-link">Case study</a>
+    <a href="#kontakt" class="nav-cta">Mám záujem →</a>
+  </div>
 </nav>
 
 <section class="hero">
@@ -807,6 +920,30 @@
       <div class="usecase-title">Externá spolupráca</div>
       <div class="usecase-text">Partneri, dodávatelia alebo zákazníci posielajú požiadavky cez formulár priamo do vášho systému.</div>
     </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CASE STUDY TEASER -->
+<section class="section">
+  <div class="section-label">Reálna realizácia</div>
+  <h2>Ako to vyzerá v praxi</h2>
+  <p class="section-desc">Nie je to teória. Prvý takýto systém som postavil pre e-commerce firmu na hlásenie interných incidentov — a z tej realizácie vznikol FlowDesk.</p>
+
+  <div class="casestudy-card">
+    <div class="casestudy-tag">Case study · Incident management</div>
+    <h3>Hlásenie incidentov <em>úplne transparentne</em> — od formulára po spätnú väzbu</h3>
+    <p>E-commerce firma so skladom aj predajňami. Incidenty sa strácali medzi chatom, e-mailom a ústnou dohodou. Postavil som tok, kde zadávateľ spraví jednu vec — nahlási problém — a zvyšok beží automaticky až po uzavretie a dotazník spätnej väzby.</p>
+    <div class="casestudy-meta">
+      <span class="casestudy-chip">E-commerce</span>
+      <span class="casestudy-chip">Jira · Google Chat</span>
+      <span class="casestudy-chip">7 krokov životného cyklu</span>
+    </div>
+    <a href="/case-study.html" class="casestudy-btn">
+      Prečítať celú case study
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
   </div>
 </section>
 
