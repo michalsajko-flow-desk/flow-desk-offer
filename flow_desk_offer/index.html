@@ -4,1026 +4,481 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FlowDesk – Automatizácia pre váš tím</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ffffff'/><text x='50' y='68' font-family='Georgia,serif' font-size='48' font-weight='bold' text-anchor='middle'><tspan fill='%231a1a1a'>f</tspan><tspan fill='%232D6A4F'>d</tspan></text></svg>">
+<meta name="description" content="Prepojíme váš formulár, task manager a chat do jedného automatizovaného systému. Jednorazovo, bez mesačných poplatkov.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='white'/%3E%3Ctext x='50%25' y='58%25' font-family='Syne, sans-serif' font-weight='800' font-size='46' text-anchor='middle'%3E%3Ctspan fill='%231b2a22'%3Ef%3C/tspan%3E%3Ctspan fill='%232d6a4f'%3Ed%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #f7f8f9;
-    --surface: #ffffff;
-    --border: #e8eaed;
-    --border-med: #d4d8dd;
-    --accent: #2d6a4f;
-    --accent-mid: #52976e;
-    --accent-light: #eef5f1;
-    --accent-border: rgba(45,106,79,0.25);
-    --text: #0f1117;
-    --muted: #6b7280;
-    --muted-light: #9ca3af;
+  :root{
+    --bg:#ffffff;
+    --surface:#f6f8f6;
+    --accent:#2d6a4f;
+    --accent-dark:#1e4a37;
+    --accent-light:#eef5f1;
+    --text:#1b2a22;
+    --muted:#66766c;
+    --line:#e4e9e4;
+    --radius:20px;
   }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'DM Sans',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
   }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;
+    color:var(--accent);background:var(--accent-light);
+    border:1px solid rgba(45,106,79,0.18);
+    padding:7px 14px;border-radius:100px;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  h1,h2,h3{font-family:'Syne',sans-serif;letter-spacing:-0.02em;color:var(--text);}
+  .section-tag{
+    font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:12px;display:block;
+  }
+  .section-title{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.12;max-width:16ch;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;
+    padding:14px 26px;border-radius:100px;border:none;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 22px rgba(45,106,79,0.25);}
+  .btn-primary:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 12px 28px rgba(45,106,79,0.3);}
+  .btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-sm{padding:9px 18px;font-size:13px;}
 
   /* NAV */
-  nav {
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
   }
-
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .logo span { color: var(--accent); }
-
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .nav-link {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--muted);
-    text-decoration: none;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-  .nav-link:hover { color: var(--text); }
-
-  .nav-cta {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 100px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 13px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .nav-cta:hover { background: var(--accent-mid); transform: translateY(-1px); }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;}
+  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+  .logo span{color:var(--accent);}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a.link{font-size:14px;color:var(--muted);font-weight:500;}
+  .nav-links a.link:hover{color:var(--text);}
+  @media(max-width:720px){.nav-links a.link{display:none;}}
 
   /* HERO */
-  .hero {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 72px 24px 80px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  .hero{padding:76px 0 40px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{
+    content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+    width:900px;height:500px;border-radius:50%;
+    background:radial-gradient(circle,rgba(45,106,79,0.10) 0%, rgba(45,106,79,0) 65%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .hero h1{font-size:clamp(38px,6.2vw,68px);font-weight:800;line-height:1.04;margin:22px auto 18px;max-width:15ch;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero p{font-size:17px;color:var(--muted);max-width:46ch;margin:0 auto 34px;line-height:1.6;}
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+  .hero-note{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.03em;}
+
+  /* FLOW VISUAL */
+  .flow-visual{
+    max-width:920px;margin:56px auto 0;
+    display:flex;align-items:center;justify-content:center;gap:0;
+    flex-wrap:wrap;
+  }
+  .flow-node{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    width:180px;
+  }
+  .flow-icon{
+    width:88px;height:88px;border-radius:24px;
+    background:var(--accent-light);border:1px solid rgba(45,106,79,0.15);
+    display:flex;align-items:center;justify-content:center;font-size:38px;
+    box-shadow:0 10px 26px rgba(45,106,79,0.08);
+    transition:transform .3s ease;
+  }
+  .flow-node:hover .flow-icon{transform:translateY(-4px);}
+  .flow-label{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;}
+  .flow-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:center;letter-spacing:.02em;}
+  .flow-arrow{
+    flex:0 0 auto;width:64px;height:88px;display:flex;align-items:center;justify-content:center;
+    color:var(--accent);opacity:.55;
+  }
+  @media(max-width:720px){
+    .flow-arrow{width:100%;height:34px;transform:rotate(90deg);}
+    .flow-node{width:100%;}
   }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--accent);
+  /* TICKER */
+  .ticker-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);overflow:hidden;padding:16px 0;margin-top:64px;}
+  .ticker{display:flex;width:max-content;animation:scroll 26s linear infinite;}
+  .ticker-item{
+    font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.05em;color:var(--muted);
+    padding:0 26px;border-right:1px solid var(--line);white-space:nowrap;
+  }
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* SECTION GENERIC */
+  .section{padding:96px 0;}
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* ICON GRID */
+  .icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:900px){.icon-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.icon-grid{grid-template-columns:1fr;}}
+  .icon-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 24px;transition:border-color .2s ease, transform .2s ease;
+  }
+  .icon-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .icon-card .ic{
+    width:56px;height:56px;border-radius:16px;background:var(--accent-light);
+    display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px;
+  }
+  .icon-card h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+  .icon-card p{font-size:13.5px;color:var(--muted);line-height:1.55;}
+
+  /* HOW IT WORKS - horizontal flow */
+  .steps-flow{
+    display:flex;gap:0;align-items:stretch;
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);
+  }
+  .step-col{flex:1;padding:32px 26px;border-right:1px solid var(--line);position:relative;}
+  .step-col:last-child{border-right:none;}
+  .step-icon{width:52px;height:52px;border-radius:14px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+  .step-col h3{font-size:15px;font-weight:700;margin-bottom:8px;}
+  .step-col p{font-size:13px;color:var(--muted);line-height:1.55;}
+  @media(max-width:860px){
+    .steps-flow{flex-direction:column;}
+    .step-col{border-right:none;border-bottom:1px solid var(--line);}
+    .step-col:last-child{border-bottom:none;}
   }
 
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(45,106,79,0.06) 0%, transparent 70%);
-    pointer-events: none;
+  /* USE CASES big icon band */
+  .usecase-band{background:var(--accent-dark);border-radius:28px;padding:64px 40px;color:#fff;}
+  .usecase-band .section-tag{color:rgba(255,255,255,0.65);}
+  .usecase-band .section-title{color:#fff;max-width:20ch;}
+  .usecase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px;}
+  @media(max-width:900px){.usecase-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.usecase-grid{grid-template-columns:1fr;}}
+  .uc-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px 20px;}
+  .uc-card .ic{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px;}
+  .uc-card h3{font-size:14.5px;font-weight:700;margin-bottom:6px;color:#fff;}
+  .uc-card p{font-size:12.5px;color:rgba(255,255,255,0.65);line-height:1.5;}
+
+  /* CASE STUDY teaser */
+  .case-teaser{
+    display:flex;align-items:center;gap:40px;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:36px;
   }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    background: var(--accent-light);
-    border: 1px solid var(--accent-border);
-    padding: 6px 14px;
-    border-radius: 100px;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: blink 2s infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(30px, 7vw, 56px);
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    margin-bottom: 20px;
-    color: var(--text);
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    color: var(--accent);
-  }
-
-  .hero-sub {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 440px;
-    margin: 0 auto 36px;
-    line-height: 1.7;
-  }
-
-  .hero-btn {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 100px;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .hero-btn:hover { background: var(--accent-mid); transform: translateY(-2px); }
-
-  /* STATS */
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    border-top: 1px solid var(--border);
-    margin-top: 56px;
-    padding-top: 40px;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
-    padding: 0 20px;
-    border-right: 1px solid var(--border);
-  }
-  .stat:last-child { border-right: none; }
-
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--muted-light);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  /* SECTIONS */
-  .section {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 60px 24px;
-  }
-
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .section h2 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: clamp(22px, 4vw, 32px);
-    letter-spacing: -0.5px;
-    line-height: 1.15;
-    margin-bottom: 16px;
-    color: var(--text);
-  }
-
-  .section-desc {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 520px;
-  }
-
-  /* PROBLEM GRID */
-  .problem-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .problem-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    transition: border-color 0.2s;
-  }
-  .problem-card:hover { border-color: var(--accent-border); }
-
-  .problem-icon { font-size: 20px; margin-bottom: 10px; }
-
-  .problem-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .problem-text {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* FLOW */
-  .flow-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  .flow-header {
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .flow-steps {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .flow-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .flow-step:last-child { border-bottom: none; }
-
-  .flow-step-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: var(--accent-light);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-
-  .flow-step-content { flex: 1; }
-
-  .flow-step-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 3px;
-    color: var(--text);
-  }
-
-  .flow-step-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  .flow-step-tools {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-  }
-
-  .tool-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    background: var(--bg);
-    border: 1px solid var(--border-med);
-    color: var(--muted);
-    padding: 2px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.04em;
-  }
-
-  /* USE CASES */
-  .usecase-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .usecase-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .usecase-card:hover { border-color: var(--accent-border); transform: translateY(-2px); }
-
-  .usecase-icon { font-size: 22px; margin-bottom: 10px; }
-
-  .usecase-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .usecase-text {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  /* CASE STUDY TEASER */
-  .casestudy-card {
-    background: var(--accent-light);
-    border: 1px solid var(--accent-border);
-    border-radius: 16px;
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .casestudy-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--accent);
-  }
-
-  .casestudy-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .casestudy-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-  }
-
-  .casestudy-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 19px;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
-    color: var(--text);
-    line-height: 1.25;
-  }
-
-  .casestudy-card h3 em { font-style: normal; color: var(--accent); }
-
-  .casestudy-card > p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 20px;
-    line-height: 1.65;
-    max-width: 52ch;
-  }
-
-  .casestudy-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 22px;
-  }
-
-  .casestudy-chip {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    background: var(--surface);
-    border: 1px solid var(--accent-border);
-    color: var(--muted);
-    padding: 4px 10px;
-    border-radius: 5px;
-    letter-spacing: 0.03em;
-  }
-
-  .casestudy-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 11px 24px;
-    border-radius: 100px;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .casestudy-btn:hover { background: var(--accent-mid); transform: translateY(-2px); }
-  .casestudy-btn svg { transition: transform 0.2s; }
-  .casestudy-btn:hover svg { transform: translateX(3px); }
-
-  /* MODEL CARD */
-  .model-card {
-    background: var(--accent-light);
-    border: 1px solid var(--accent-border);
-    border-radius: 16px;
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .model-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--accent);
-    border-radius: 0;
-  }
-
-  .model-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-    color: var(--text);
-  }
-
-  .model-card > p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 24px;
-    line-height: 1.6;
-  }
-
-  .model-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .model-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .model-step-num {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .model-step-text {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  .model-step-text strong {
-    color: var(--text);
-    font-weight: 500;
-  }
+  .case-teaser .ic{width:64px;height:64px;flex-shrink:0;border-radius:18px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:30px;}
+  .case-teaser .body{flex:1;}
+  .case-teaser h3{font-size:19px;font-weight:700;margin-bottom:6px;}
+  .case-teaser p{font-size:14px;color:var(--muted);}
+  @media(max-width:640px){.case-teaser{flex-direction:column;align-items:flex-start;text-align:left;}}
 
   /* PRICING */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:760px){.pricing-grid{grid-template-columns:1fr;}}
+  .price-card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;background:#fff;
+    transition:transform .2s ease, box-shadow .2s ease;
   }
-
-  .pricing-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px 20px;
-    transition: border-color 0.2s, transform 0.2s;
+  .price-card.featured{
+    background:var(--accent-dark);color:#fff;border-color:var(--accent-dark);
+    box-shadow:0 20px 44px rgba(30,74,55,0.28);
   }
-  .pricing-card:hover { transform: translateY(-3px); }
-
-  .pricing-card.featured {
-    background: var(--accent-light);
-    border-color: var(--accent);
+  .price-card:hover{transform:translateY(-3px);}
+  .price-badge{
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;display:inline-block;
   }
-
-  .pricing-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    color: var(--muted);
+  .price-card.featured .price-badge{color:#a8e4c4;}
+  .price-name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px;}
+  .price-value{font-family:'Syne',sans-serif;font-weight:800;font-size:44px;letter-spacing:-0.02em;}
+  .price-value sup{font-size:18px;}
+  .price-period{font-size:13px;color:var(--muted);margin-bottom:24px;display:block;}
+  .price-card.featured .price-period{color:rgba(255,255,255,0.6);}
+  .price-features{margin-bottom:26px;}
+  .price-features li{
+    font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:9px;align-items:flex-start;
   }
-
-  .pricing-price {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 42px;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 4px;
-    color: var(--text);
-    font-variant-numeric: lining-nums tabular-nums;
-    font-feature-settings: "lnum" 1, "tnum" 1;
+  .price-card.featured .price-features li{border-color:rgba(255,255,255,0.15);}
+  .price-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;}
+  .price-card.featured .price-features li::before{color:#a8e4c4;}
+  .price-card .btn{width:100%;justify-content:center;}
+  .price-custom{
+    margin-top:20px;text-align:center;font-size:13.5px;color:var(--muted);
   }
+  .price-custom a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px;}
 
-  .pricing-price .currency {
-    font-size: 0.5em;
-    font-weight: 600;
-    vertical-align: middle;
-    margin-right: 2px;
-    opacity: 0.7;
-    position: relative;
-    top: -3px;
+  /* FINAL CTA */
+  .cta-final{
+    text-align:center;background:var(--accent-light);border-radius:32px;padding:72px 32px;
   }
+  .cta-final h2{font-size:clamp(30px,5vw,48px);font-weight:800;margin-bottom:14px;}
+  .cta-final p{color:var(--muted);font-size:16px;margin-bottom:30px;}
 
-  .pricing-period {
-    font-size: 12px;
-    color: var(--muted-light);
-    margin-bottom: 18px;
-  }
-
-  .pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .pricing-features li {
-    font-size: 13px;
-    color: var(--muted);
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    line-height: 1.4;
-  }
-
-  .pricing-features li::before {
-    content: '✓';
-    color: var(--accent);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .pricing-custom {
-    background: var(--surface);
-    border: 1px dashed var(--border-med);
-    border-radius: 14px;
-    padding: 20px;
-    text-align: center;
-    grid-column: span 2;
-  }
-
-  .pricing-custom p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
-  .pricing-custom strong {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--accent);
-  }
-
-  /* CTA */
-  .cta-section {
-    background: var(--accent-light);
-    border-top: 1px solid var(--accent-border);
-    padding: 60px 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--accent);
-  }
-
-  .cta-section h2 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(26px, 5vw, 40px);
-    color: var(--text);
-    letter-spacing: -1px;
-    margin-bottom: 14px;
-    line-height: 1.1;
-  }
-
-  .cta-section h2 em {
-    font-style: normal;
-    color: var(--accent);
-  }
-
-  .cta-section p {
-    font-size: 15px;
-    color: var(--muted);
-    margin-bottom: 32px;
-    line-height: 1.7;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cta-btn {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 100px;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .cta-btn:hover { background: var(--accent-mid); transform: translateY(-2px); }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
-
-  footer {
-    text-align: center;
-    padding: 28px 24px;
-    color: var(--muted);
-    font-size: 13px;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-  }
-
-  footer a { color: var(--accent); text-decoration: none; }
-  footer a:hover { color: var(--accent-mid); }
-
-  @media (max-width: 520px) {
-    .problem-grid { grid-template-columns: 1fr; }
-    .usecase-grid { grid-template-columns: 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; }
-    .pricing-custom { grid-column: span 1; }
-    .stats { gap: 20px; }
-    .stat { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-    .stat:last-child { border-bottom: none; padding-bottom: 0; }
-    nav .nav-cta { font-size: 12px; padding: 8px 14px; }
-    .nav-right { gap: 12px; }
-    .nav-link { display: none; }
-  }
+  footer{border-top:1px solid var(--line);padding:32px 0;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+  .foot-copy{font-size:12.5px;color:var(--muted);}
+  .foot-links{display:flex;gap:20px;font-size:12.5px;color:var(--muted);}
+  .foot-links a:hover{color:var(--accent);}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="logo">Flow<span>Desk</span></a>
-  <div class="nav-right">
-    <a href="/case-study.html" class="nav-link">Case study</a>
-    <a href="#kontakt" class="nav-cta">Mám záujem →</a>
+  <div class="wrap">
+    <a href="#" class="logo">Flow<span>Desk</span></a>
+    <div class="nav-links">
+      <a class="link" href="/case-study">Case study</a>
+      <a class="link" href="#ako">Ako to funguje</a>
+      <a class="link" href="#cennik">Cenník</a>
+      <a class="btn btn-primary btn-sm" href="https://flow-desk-onboarding.netlify.app">Mám záujem →</a>
+    </div>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Pre firmy 1–50 ľudí</div>
-  <h1>Koniec chaosu<br>v <em>komunikácii</em> tímu</h1>
-  <p class="hero-sub">Prepojíme váš formulár, task manager a chat do jedného automatizovaného systému. Jednorazovo. Bez mesačných poplatkov.</p>
-  <a href="#kontakt" class="hero-btn">Chcem vedieť viac →</a>
+  <div class="wrap hero-inner">
+    <span class="eyebrow">Pre firmy 1–50 ľudí</span>
+    <h1>Koniec chaosu<br><em>v komunikácii</em> tímu</h1>
+    <p>Prepojíme váš formulár, task manager a chat do jedného automatizovaného systému. Jednorazovo. Bez mesačných poplatkov.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://flow-desk-onboarding.netlify.app">Chcem to nastaviť →</a>
+      <a class="btn btn-ghost" href="#ako">Pozrieť ako to funguje</a>
+    </div>
+    <div class="hero-note">30 min hovor zadarmo · nastavenie do 5 dní</div>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num">1×</div>
-      <div class="stat-label">platba, nie predplatné</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">3–5</div>
-      <div class="stat-label">dní implementácia</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">vaše vlastníctvo</div>
+    <div class="flow-visual">
+      <div class="flow-node">
+        <div class="flow-icon">📝</div>
+        <div class="flow-label">Formulár</div>
+        <div class="flow-sub">niekto nahlási požiadavku</div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <svg width="52" height="14" viewBox="0 0 52 14" fill="none"><path d="M0 7H49M49 7L42 1M49 7L42 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-node">
+        <div class="flow-icon">📋</div>
+        <div class="flow-label">Úloha</div>
+        <div class="flow-sub">automaticky vznikne ticket</div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <svg width="52" height="14" viewBox="0 0 52 14" fill="none"><path d="M0 7H49M49 7L42 1M49 7L42 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-node">
+        <div class="flow-icon">💬</div>
+        <div class="flow-label">Notifikácia</div>
+        <div class="flow-sub">tím dostane správu vo vlákne</div>
+      </div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Google Forms</span>
+    <span class="ticker-item">Trello</span>
+    <span class="ticker-item">Jira</span>
+    <span class="ticker-item">Slack</span>
+    <span class="ticker-item">Google Chat</span>
+    <span class="ticker-item">ClickUp</span>
+    <span class="ticker-item">Excel</span>
+    <span class="ticker-item">Google Forms</span>
+    <span class="ticker-item">Trello</span>
+    <span class="ticker-item">Jira</span>
+    <span class="ticker-item">Slack</span>
+    <span class="ticker-item">Google Chat</span>
+    <span class="ticker-item">ClickUp</span>
+    <span class="ticker-item">Excel</span>
+  </div>
+</div>
 
+<!-- PROBLEM -->
 <section class="section">
-  <div class="section-label">Poznáte to?</div>
-  <h2>Malý tím, veľký chaos</h2>
-  <p class="section-desc">Požiadavky chodia emailom, cez chat, ústne. Nikto nevie čo je kde, kto čo rieši a čo sa deje.</p>
-
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="problem-icon">📨</div>
-      <div class="problem-title">Požiadavky sa strácajú</div>
-      <div class="problem-text">Email tu, správa tam, post-it niekde. Nič nie je na jednom mieste.</div>
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="section-tag">Poznáte to?</span>
+      <h2 class="section-title" style="margin:0 auto;">Malý tím, veľký chaos</h2>
     </div>
-    <div class="problem-card">
-      <div class="problem-icon">🔁</div>
-      <div class="problem-title">Manuálne kopírovanie</div>
-      <div class="problem-text">Niekto prepisuje požiadavky z emailu do tabuľky, potom do chatu.</div>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">❓</div>
-      <div class="problem-title">Nikto nevie čo sa deje</div>
-      <div class="problem-text">"Riešiš to ty?" "Posunul sa ticket?" "Kedy bude hotové?"</div>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">⏰</div>
-      <div class="problem-title">Čas míňaný na zisťovanie</div>
-      <div class="problem-text">Namiesto práce riešite kde čo je a kto za čo zodpovedá.</div>
+    <div class="icon-grid">
+      <div class="icon-card">
+        <div class="ic">📨</div>
+        <h3>Požiadavky sa strácajú</h3>
+        <p>Email tu, správa tam. Nič nie je na jednom mieste.</p>
+      </div>
+      <div class="icon-card">
+        <div class="ic">🔁</div>
+        <h3>Manuálne kopírovanie</h3>
+        <p>Niekto prepisuje požiadavky z emailu do tabuľky, potom do chatu.</p>
+      </div>
+      <div class="icon-card">
+        <div class="ic">❓</div>
+        <h3>Nikto nevie, čo sa deje</h3>
+        <p>„Riešiš to ty?“ „Posunul sa ticket?“ „Kedy bude hotové?“</p>
+      </div>
+      <div class="icon-card">
+        <div class="ic">⏰</div>
+        <h3>Strata času</h3>
+        <p>Namiesto práce riešite, kde čo je a kto za čo zodpovedá.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<!-- HOW IT WORKS -->
+<section class="section" id="ako" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="section-tag">Riešenie</span>
+      <h2 class="section-title" style="margin:0 auto;">Jeden formulár. Zvyšok sa deje samo.</h2>
+    </div>
+    <div class="steps-flow">
+      <div class="step-col">
+        <div class="step-icon">📝</div>
+        <h3>Vyplní sa formulár</h3>
+        <p>Zákazník, kolega alebo partner nahlási požiadavku online.</p>
+      </div>
+      <div class="step-col">
+        <div class="step-icon">📋</div>
+        <h3>Vznikne úloha</h3>
+        <p>Bez zásahu človeka sa vytvorí ticket — meno, popis, priorita.</p>
+      </div>
+      <div class="step-col">
+        <div class="step-icon">🔔</div>
+        <h3>Príde notifikácia</h3>
+        <p>Do chatu príde správa: kto, čo a s akou prioritou.</p>
+      </div>
+      <div class="step-col">
+        <div class="step-icon">🔄</div>
+        <h3>Update ide do vlákna</h3>
+        <p>Zmena stavu tiketu = automatická odpoveď v pôvodnom vlákne.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- USE CASES -->
 <section class="section">
-  <div class="section-label">Riešenie</div>
-  <h2>Jeden formulár.<br>Všetko sa deje samo.</h2>
-  <p class="section-desc">Nastavíme vám automatizovaný systém ktorý prepojí nástroje čo už používate — alebo odporučíme tie správne.</p>
-
-  <div class="flow-wrap">
-    <div class="flow-header">Ako to funguje</div>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="flow-step-icon">📝</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Niekto vyplní formulár</div>
-          <div class="flow-step-desc">Zákazník, kolega alebo externý partner nahlási požiadavku cez jednoduchý online formulár.</div>
-          <div class="flow-step-tools">
-            <span class="tool-tag">Google Forms</span>
-            <span class="tool-tag">Jira Forms</span>
-            <span class="tool-tag">Typeform</span>
-          </div>
+  <div class="wrap">
+    <div class="usecase-band">
+      <span class="section-tag">Príklady použitia</span>
+      <h2 class="section-title">Funguje pre rôzne typy tímov</h2>
+      <div class="usecase-grid">
+        <div class="uc-card">
+          <div class="ic">🚨</div>
+          <h3>Incident management</h3>
+          <p>IT tímy a e-shopy — okamžité hlásenie a sledovanie výpadkov.</p>
+        </div>
+        <div class="uc-card">
+          <div class="ic">📋</div>
+          <h3>SLA požiadavky</h3>
+          <p>Sledovanie požiadaviek zákazníkov s jasnou zodpovednosťou.</p>
+        </div>
+        <div class="uc-card">
+          <div class="ic">✅</div>
+          <h3>Interné úlohy</h3>
+          <p>Tím si zadáva úlohy cez formulár — nič sa nestratí.</p>
+        </div>
+        <div class="uc-card">
+          <div class="ic">🤝</div>
+          <h3>Externá spolupráca</h3>
+          <p>Partneri posielajú požiadavky priamo do vášho systému.</p>
         </div>
       </div>
-      <div class="flow-step">
-        <div class="flow-step-icon">📋</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Automaticky vznikne úloha</div>
-          <div class="flow-step-desc">Bez ľudského zásahu sa vytvorí ticket v task manageri — s menom, popisom, prioritou.</div>
-          <div class="flow-step-tools">
-            <span class="tool-tag">Trello</span>
-            <span class="tool-tag">Jira</span>
-            <span class="tool-tag">Excel</span>
-          </div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-icon">🔔</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Tím dostane notifikáciu</div>
-          <div class="flow-step-desc">Do firemného chatu príde správa — kto nahlásil, čo a s akou prioritou.</div>
-          <div class="flow-step-tools">
-            <span class="tool-tag">Slack</span>
-            <span class="tool-tag">Google Chat</span>
-            <span class="tool-tag">Email</span>
-          </div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-icon">🔄</div>
-        <div class="flow-step-content">
-          <div class="flow-step-title">Každý update ide do vlákna</div>
-          <div class="flow-step-desc">Keď sa stav tiketu zmení, odpoveď príde automaticky do vlákna pôvodnej správy. Žiadny chaos, všetko pohromade.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top: 32px; position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; border:1px solid var(--border);">
-    <iframe
-      src="https://www.loom.com/embed/be4f62d6d7454d858feb799e3a4b7e2c"
-      frameborder="0"
-      allowfullscreen
-      style="position:absolute;top:0;left:0;width:100%;height:100%;">
-    </iframe>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section class="section">
-  <div class="section-label">Príklady použitia</div>
-  <h2>Funguje pre rôzne<br>typy tímov</h2>
-  <p class="section-desc">Systém je flexibilný — nastavíme ho presne podľa toho, čo váš tím potrebuje.</p>
-
-  <div class="usecase-grid">
-    <div class="usecase-card">
-      <div class="usecase-icon">🚨</div>
-      <div class="usecase-title">Incident management</div>
-      <div class="usecase-text">IT tímy, e-shopy, SaaS firmy — okamžité hlásenie a sledovanie incidentov.</div>
-    </div>
-    <div class="usecase-card">
-      <div class="usecase-icon">📋</div>
-      <div class="usecase-title">SLA požiadavky</div>
-      <div class="usecase-text">Sledovanie požiadaviek od zákazníkov s jasnými stavmi a zodpovednosťou.</div>
-    </div>
-    <div class="usecase-card">
-      <div class="usecase-icon">✅</div>
-      <div class="usecase-title">Interné úlohy</div>
-      <div class="usecase-text">Tím si navzájom zadáva úlohy cez formulár — všetko evidované, nič sa nestratí.</div>
-    </div>
-    <div class="usecase-card">
-      <div class="usecase-icon">🤝</div>
-      <div class="usecase-title">Externá spolupráca</div>
-      <div class="usecase-text">Partneri, dodávatelia alebo zákazníci posielajú požiadavky cez formulár priamo do vášho systému.</div>
     </div>
   </div>
 </section>
-
-<hr class="divider">
 
 <!-- CASE STUDY TEASER -->
-<section class="section">
-  <div class="section-label">Reálna realizácia</div>
-  <h2>Ako to vyzerá v praxi</h2>
-  <p class="section-desc">Nie je to teória. Prvý takýto systém som postavil pre e-commerce firmu na hlásenie interných incidentov — a z tej realizácie vznikol FlowDesk.</p>
-
-  <div class="casestudy-card">
-    <div class="casestudy-tag">Case study · Incident management</div>
-    <h3>Hlásenie incidentov <em>úplne transparentne</em> — od formulára po spätnú väzbu</h3>
-    <p>E-commerce firma so skladom aj predajňami. Incidenty sa strácali medzi chatom, e-mailom a ústnou dohodou. Postavil som tok, kde zadávateľ spraví jednu vec — nahlási problém — a zvyšok beží automaticky až po uzavretie a dotazník spätnej väzby.</p>
-    <div class="casestudy-meta">
-      <span class="casestudy-chip">E-commerce</span>
-      <span class="casestudy-chip">Jira · Google Chat</span>
-      <span class="casestudy-chip">7 krokov životného cyklu</span>
-    </div>
-    <a href="/case-study.html" class="casestudy-btn">
-      Prečítať celú case study
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section class="section">
-  <div class="section-label">Ako spolupracujeme</div>
-  <h2>Nastavíme, odovzdáme,<br>odídeme.</h2>
-  <p class="section-desc">Žiadna viazanosť. Systém je váš od prvého dňa.</p>
-
-  <div class="model-card">
-    <h3>Jednorazová implementácia</h3>
-    <p>Nastavíme všetko na vašich účtoch. Vy ste vlastníkmi — nie my.</p>
-    <div class="model-steps">
-      <div class="model-step">
-        <div class="model-step-num">1</div>
-        <div class="model-step-text"><strong>Úvodný hovor (30 min, zadarmo)</strong> — zistíme čo potrebujete a navrhneme riešenie.</div>
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="case-teaser">
+      <div class="ic">📊</div>
+      <div class="body">
+        <h3>Reálna realizácia: hlásenie incidentov v e-commerce firme</h3>
+        <p>Od formulára po spätnú väzbu — 7 krokov, plne automatizovaných.</p>
       </div>
-      <div class="model-step">
-        <div class="model-step-num">2</div>
-        <div class="model-step-text"><strong>Implementácia (3–5 dní)</strong> — nastavíme celý systém na vašich účtoch.</div>
-      </div>
-      <div class="model-step">
-        <div class="model-step-num">3</div>
-        <div class="model-step-text"><strong>Odovzdanie + zaškolenie</strong> — ukážeme vám ako systém funguje a odovzdáme manuál.</div>
-      </div>
-      <div class="model-step">
-        <div class="model-step-num">4</div>
-        <div class="model-step-text"><strong>Idete sami</strong> — systém je váš. Ak niekedy niečo potrebujete, sme k dispozícii za transparentnú hodinovú sadzbu.</div>
-      </div>
+      <a class="btn btn-ghost btn-sm" href="/case-study">Čítať case study →</a>
     </div>
   </div>
 </section>
 
-<hr class="divider">
-
-<section class="section">
-  <div class="section-label">Ceny</div>
-  <h2>Jednorazová platba.<br>Žiadne skryté poplatky.</h2>
-  <p class="section-desc">Platíte raz za implementáciu. Ďalej vás to nestojí nič — okrem nástrojov ktoré už používate.</p>
-
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <div class="pricing-name">Starter</div>
-      <div class="pricing-price"><span class="currency">€</span>490</div>
-      <div class="pricing-period">jednorazovo</div>
-      <ul class="pricing-features">
-        <li>1 automatizovaný flow</li>
-        <li>Prepojenie 2–3 nástrojov</li>
-        <li>Základná dokumentácia</li>
-        <li>Zaškolenie (1 hod)</li>
-      </ul>
+<!-- PRICING -->
+<section class="section" id="cennik">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="section-tag">Ceny</span>
+      <h2 class="section-title" style="margin:0 auto;">Jednorazová platba. Žiadne skryté poplatky.</h2>
     </div>
-    <div class="pricing-card featured">
-      <div class="pricing-name">Growth</div>
-      <div class="pricing-price"><span class="currency">€</span>990</div>
-      <div class="pricing-period">jednorazovo</div>
-      <ul class="pricing-features">
-        <li>Až 3 automatizované flows</li>
-        <li>Prepojenie 3–5 nástrojov</li>
-        <li>Kompletná dokumentácia</li>
-        <li>Zaškolenie tímu (2 hod)</li>
-      </ul>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <span class="price-badge">Starter</span>
+        <div class="price-name">Pre jednoduchý tok</div>
+        <div class="price-value"><sup>€</sup>490</div>
+        <span class="price-period">jednorazovo</span>
+        <ul class="price-features">
+          <li>1 automatizovaný flow</li>
+          <li>Prepojenie 2–3 nástrojov</li>
+          <li>Základná dokumentácia</li>
+          <li>Zaškolenie (1 hod)</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://flow-desk-onboarding.netlify.app">Dohodnúť hovor</a>
+      </div>
+      <div class="price-card featured">
+        <span class="price-badge">Growth · najpopulárnejší</span>
+        <div class="price-name">Pre komplexnejší systém</div>
+        <div class="price-value"><sup>€</sup>990</div>
+        <span class="price-period">jednorazovo</span>
+        <ul class="price-features">
+          <li>Až 3 automatizované flows</li>
+          <li>Prepojenie 3–5 nástrojov</li>
+          <li>Kompletná dokumentácia</li>
+          <li>Zaškolenie tímu (2 hod)</li>
+        </ul>
+        <a class="btn btn-primary" href="https://flow-desk-onboarding.netlify.app" style="background:#fff;color:var(--accent-dark);">Dohodnúť hovor zadarmo</a>
+      </div>
     </div>
-    <div class="pricing-custom">
-      <p>Väčší projekt alebo špecifické požiadavky?</p>
-      <strong>Dohodneme cenu individuálne →</strong>
-    </div>
+    <div class="price-custom">Väčší projekt alebo špecifické požiadavky? <a href="https://flow-desk-onboarding.netlify.app">Dohodneme cenu individuálne →</a></div>
   </div>
 </section>
 
-<section class="cta-section" id="kontakt">
-  <h2>Dohodnime si<br><em>hovor zadarmo</em></h2>
-  <p>30 minút, bez záväzkov. Zistíme, či a ako vám vieme pomôcť.</p>
-  <a href="https://flow-desk-onboarding.netlify.app" class="cta-btn">Napísať nám →</a>
+<!-- FINAL CTA -->
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta-final">
+      <h2>Dohodnime si <em style="color:var(--accent);font-style:normal;">hovor zadarmo</em></h2>
+      <p>30 minút, bez záväzkov. Zistíme, či a ako vám vieme pomôcť.</p>
+      <a class="btn btn-primary" href="https://flow-desk-onboarding.netlify.app">Napísať nám →</a>
+    </div>
+  </div>
 </section>
 
 <footer>
-  <p>© 2026 FlowDesk · <a href="mailto:michal.sajko@gmail.com">michal.sajko@gmail.com</a> · <a href="tel:+421914703355">0914 703 355</a></p>
-  <p style="margin-top:6px;font-size:11px;opacity:0.5;">Jednorazová implementácia workflow automatizácie pre malé firmy</p>
+  <div class="wrap">
+    <span class="foot-copy">© 2026 FlowDesk · michal.sajko@gmail.com · 0914 703 355</span>
+    <div class="foot-links">
+      <a href="/case-study">Case study</a>
+      <a href="https://flow-desk-onboarding.netlify.app">Kontakt</a>
+    </div>
+  </div>
 </footer>
 
 </body>
