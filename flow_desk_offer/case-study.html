@@ -37,42 +37,43 @@
     position: sticky; top: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 1rem 2rem;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.88);
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid #e4ece8;
+    border-bottom: 1px solid #dfe7dc;
   }
   .cs-nav-logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1.05rem;
     letter-spacing: -0.02em;
-    color: #1a2420;
+    color: #10140f;
     text-decoration: none;
   }
-  .cs-nav-logo span { color: #2d6a4f; }
+  .cs-nav-logo span { color: #3ba81e; }
   .cs-nav-actions { display: flex; align-items: center; gap: 1.25rem; }
   .cs-nav-back {
     display: inline-flex; align-items: center; gap: 0.4rem;
     font-size: 0.85rem;
-    color: #5f6f68;
+    color: #5b645c;
     text-decoration: none;
     transition: color 0.2s;
   }
-  .cs-nav-back:hover { color: #1a2420; }
+  .cs-nav-back:hover { color: #10140f; }
   .cs-nav-back svg { transition: transform 0.2s; }
   .cs-nav-back:hover svg { transform: translateX(-3px); }
   .cs-nav-cta {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    background: #2d6a4f;
+    background: #3ba81e;
     color: #fff;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.85rem;
     padding: 0.55rem 1.25rem;
     border-radius: 100px;
-    transition: background 0.2s, transform 0.15s;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 6px 16px -6px rgba(59,168,30,.35);
   }
-  .cs-nav-cta:hover { background: #245640; transform: translateY(-1px); }
+  .cs-nav-cta:hover { background: #2c8c14; transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(59,168,30,.45); }
 
   @media (max-width: 620px) {
     .cs-nav { padding: 0.85rem 1.2rem; }
@@ -85,13 +86,13 @@
      ============================================================ */
   .cs {
     --cs-bg: #ffffff;
-    --cs-surface: #f7faf8;
-    --cs-accent: #2d6a4f;
-    --cs-accent-light: #eef5f1;
-    --cs-accent-soft: #d7e8df;
-    --cs-ink: #1a2420;
-    --cs-muted: #5f6f68;
-    --cs-line: #e4ece8;
+    --cs-surface: #f5f8f3;
+    --cs-accent: #3ba81e;
+    --cs-accent-light: #effbe9;
+    --cs-accent-soft: #d7f0c8;
+    --cs-ink: #10140f;
+    --cs-muted: #5b645c;
+    --cs-line: #dfe7dc;
     --cs-danger: #b4453c;
 
     max-width: 1080px;
@@ -142,7 +143,7 @@
     max-width: 18ch;
     color: var(--cs-ink);
   }
-  .cs-title em { font-style: normal; color: var(--cs-accent); }
+  .cs-title em { font-style: normal; background: linear-gradient(100deg, #32b51c, #55d42f 60%, #8be866); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
   .cs-lede {
     font-size: 1.08rem;
@@ -207,7 +208,7 @@
     background: var(--cs-bg);
   }
   .cs-block.is-accent {
-    background: var(--cs-surface);
+    background: linear-gradient(160deg, #f5f8f3, #effbe9);
     border-color: var(--cs-accent-soft);
   }
   .cs-block-tag {
@@ -247,7 +248,7 @@
     content: '';
     position: absolute; left: 0; top: 0.85rem;
     width: 7px; height: 7px; border-radius: 2px;
-    background: var(--cs-accent);
+    background: linear-gradient(135deg, #6be348, #2cad1b);
   }
 
   /* ---- lifecycle (signature element) ---- */
@@ -283,7 +284,7 @@
     position: absolute;
     left: 11px; top: 8px; bottom: 8px;
     width: 2px;
-    background: linear-gradient(180deg, var(--cs-accent) 0%, var(--cs-accent-soft) 100%);
+    background: linear-gradient(180deg, #55d42f 0%, var(--cs-accent-soft) 100%);
   }
 
   .cs-step {
@@ -308,8 +309,10 @@
     z-index: 2;
   }
   .cs-step.is-auto .cs-step-dot {
-    background: var(--cs-accent);
-    color: #fff;
+    background: linear-gradient(135deg, #6be348, #2cad1b);
+    color: #10200d;
+    border-color: transparent;
+    box-shadow: 0 4px 12px -4px rgba(85,212,47,.4);
   }
 
   .cs-step-card {
@@ -321,7 +324,7 @@
   }
   .cs-step-card:hover {
     border-color: var(--cs-accent-soft);
-    box-shadow: 0 10px 30px rgba(45,106,79,0.06);
+    box-shadow: 0 10px 30px rgba(59,168,30,0.1);
     transform: translateY(-2px);
   }
   .cs-step-tags {
@@ -339,8 +342,8 @@
     color: var(--cs-accent);
   }
   .cs-chip.is-user {
-    background: #f0eef7;
-    color: #5b4b8a;
+    background: #f0f5ee;
+    color: #3ba81e;
   }
   .cs-step-card h4 {
     font-family: 'Syne', sans-serif;
@@ -384,7 +387,10 @@
     font-weight: 800;
     font-size: clamp(2rem, 4vw, 2.8rem);
     letter-spacing: -0.03em;
-    color: var(--cs-accent);
+    background: linear-gradient(135deg, #32b51c, #55d42f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     line-height: 1;
     margin-bottom: 0.5rem;
   }
@@ -417,12 +423,13 @@
     flex-shrink: 0;
     width: 34px; height: 34px;
     border-radius: 8px;
-    background: var(--cs-accent-light);
+    background: linear-gradient(135deg, #6be348, #2cad1b);
     display: flex; align-items: center; justify-content: center;
-    color: var(--cs-accent);
+    color: #10200d;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1rem;
+    box-shadow: 0 4px 12px -4px rgba(85,212,47,.35);
   }
   .cs-note p {
     margin: 0;
@@ -454,7 +461,7 @@
   }
   .cs-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--cs-accent);
+    background: linear-gradient(135deg, #4cc026, #2c8c14);
     color: #fff;
     text-decoration: none;
     font-family: 'DM Sans', sans-serif;
@@ -462,9 +469,10 @@
     font-size: 1rem;
     padding: 0.95rem 2.2rem;
     border-radius: 100px;
-    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 8px 20px -6px rgba(59,168,30,.4);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   }
-  .cs-btn:hover { background: #245640; transform: translateY(-2px); }
+  .cs-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -6px rgba(59,168,30,.5); }
   .cs-cta-alt {
     display: block;
     margin-top: 1.2rem;
@@ -486,22 +494,22 @@
      FOOTER
      ============================================================ */
   .cs-footer {
-    border-top: 1px solid #e4ece8;
+    border-top: 1px solid #dfe7dc;
     padding: 1.75rem 2rem;
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 1rem;
     max-width: 1080px;
     margin: 0 auto;
   }
-  .cs-footer-copy { font-size: 0.8rem; color: #9ca3af; }
+  .cs-footer-copy { font-size: 0.8rem; color: #8b948a; }
   .cs-footer-links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
   .cs-footer-links a {
     font-size: 0.8rem;
-    color: #9ca3af;
+    color: #8b948a;
     text-decoration: none;
     transition: color 0.2s;
   }
-  .cs-footer-links a:hover { color: #1a2420; }
+  .cs-footer-links a:hover { color: #3ba81e; }
 
   /* ---- responsive ---- */
   @media (max-width: 760px) {
