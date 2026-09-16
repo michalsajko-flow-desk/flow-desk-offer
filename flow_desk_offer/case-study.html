@@ -15,14 +15,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ffffff'/><text x='50' y='68' font-family='Georgia,serif' font-size='48' font-weight='bold' text-anchor='middle'><tspan fill='%231a1a1a'>f</tspan><tspan fill='%232D6A4F'>d</tspan></text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ffffff'/><text x='50' y='68' font-family='Georgia,serif' font-size='48' font-weight='bold' text-anchor='middle'><tspan fill='%23191726'>f</tspan><tspan fill='%233A2F9C'>d</tspan></text></svg>">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
   body {
     margin: 0;
     background: #ffffff;
-    color: #1a2420;
+    color: #191726;
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -39,31 +39,31 @@
     padding: 1rem 2rem;
     background: rgba(255,255,255,0.88);
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid #dfe7dc;
+    border-bottom: 1px solid #e0dcf0;
   }
   .cs-nav-logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1.05rem;
     letter-spacing: -0.02em;
-    color: #10140f;
+    color: #191726;
     text-decoration: none;
   }
-  .cs-nav-logo span { color: #3ba81e; }
+  .cs-nav-logo span { color: #6355e0; }
   .cs-nav-actions { display: flex; align-items: center; gap: 1.25rem; }
   .cs-nav-back {
     display: inline-flex; align-items: center; gap: 0.4rem;
     font-size: 0.85rem;
-    color: #5b645c;
+    color: #6a6580;
     text-decoration: none;
     transition: color 0.2s;
   }
-  .cs-nav-back:hover { color: #10140f; }
+  .cs-nav-back:hover { color: #191726; }
   .cs-nav-back svg { transition: transform 0.2s; }
   .cs-nav-back:hover svg { transform: translateX(-3px); }
   .cs-nav-cta {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    background: #3ba81e;
+    background: #6355e0;
     color: #fff;
     text-decoration: none;
     font-weight: 600;
@@ -71,9 +71,9 @@
     padding: 0.55rem 1.25rem;
     border-radius: 100px;
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 6px 16px -6px rgba(59,168,30,.35);
+    box-shadow: 0 6px 16px -6px rgba(99,85,224,.35);
   }
-  .cs-nav-cta:hover { background: #2c8c14; transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(59,168,30,.45); }
+  .cs-nav-cta:hover { background: #4b3dc4; transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(99,85,224,.45); }
 
   @media (max-width: 620px) {
     .cs-nav { padding: 0.85rem 1.2rem; }
@@ -86,13 +86,13 @@
      ============================================================ */
   .cs {
     --cs-bg: #ffffff;
-    --cs-surface: #f5f8f3;
-    --cs-accent: #3ba81e;
-    --cs-accent-light: #effbe9;
-    --cs-accent-soft: #d7f0c8;
-    --cs-ink: #10140f;
-    --cs-muted: #5b645c;
-    --cs-line: #dfe7dc;
+    --cs-surface: #f2f0fa;
+    --cs-accent: #6355e0;
+    --cs-accent-light: #f1eefc;
+    --cs-accent-soft: #e0daf9;
+    --cs-ink: #191726;
+    --cs-muted: #6a6580;
+    --cs-line: #e0dcf0;
     --cs-danger: #b4453c;
 
     max-width: 1080px;
@@ -143,7 +143,7 @@
     max-width: 18ch;
     color: var(--cs-ink);
   }
-  .cs-title em { font-style: normal; background: linear-gradient(100deg, #32b51c, #55d42f 60%, #8be866); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cs-title em { font-style: normal; background: linear-gradient(100deg, #4b3dc4, #6355e0 60%, #9b8ff0); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
   .cs-lede {
     font-size: 1.08rem;
@@ -208,7 +208,7 @@
     background: var(--cs-bg);
   }
   .cs-block.is-accent {
-    background: linear-gradient(160deg, #f5f8f3, #effbe9);
+    background: linear-gradient(160deg, #f2f0fa, #f1eefc);
     border-color: var(--cs-accent-soft);
   }
   .cs-block-tag {
@@ -248,7 +248,7 @@
     content: '';
     position: absolute; left: 0; top: 0.85rem;
     width: 7px; height: 7px; border-radius: 2px;
-    background: linear-gradient(135deg, #6be348, #2cad1b);
+    background: linear-gradient(135deg, #8f7ff0, #4b3dc4);
   }
 
   /* ---- lifecycle (signature element) ---- */
@@ -284,7 +284,7 @@
     position: absolute;
     left: 11px; top: 8px; bottom: 8px;
     width: 2px;
-    background: linear-gradient(180deg, #55d42f 0%, var(--cs-accent-soft) 100%);
+    background: linear-gradient(180deg, #6355e0 0%, var(--cs-accent-soft) 100%);
   }
 
   .cs-step {
@@ -309,10 +309,10 @@
     z-index: 2;
   }
   .cs-step.is-auto .cs-step-dot {
-    background: linear-gradient(135deg, #6be348, #2cad1b);
-    color: #10200d;
+    background: linear-gradient(135deg, #8f7ff0, #4b3dc4);
+    color: #ffffff;
     border-color: transparent;
-    box-shadow: 0 4px 12px -4px rgba(85,212,47,.4);
+    box-shadow: 0 4px 12px -4px rgba(99,85,224,.4);
   }
 
   .cs-step-card {
@@ -324,7 +324,7 @@
   }
   .cs-step-card:hover {
     border-color: var(--cs-accent-soft);
-    box-shadow: 0 10px 30px rgba(59,168,30,0.1);
+    box-shadow: 0 10px 30px rgba(99,85,224,0.1);
     transform: translateY(-2px);
   }
   .cs-step-tags {
@@ -342,8 +342,8 @@
     color: var(--cs-accent);
   }
   .cs-chip.is-user {
-    background: #f0f5ee;
-    color: #3ba81e;
+    background: #f0eefa;
+    color: #6355e0;
   }
   .cs-step-card h4 {
     font-family: 'Syne', sans-serif;
@@ -387,7 +387,7 @@
     font-weight: 800;
     font-size: clamp(2rem, 4vw, 2.8rem);
     letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #32b51c, #55d42f);
+    background: linear-gradient(135deg, #4b3dc4, #6355e0);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -423,13 +423,13 @@
     flex-shrink: 0;
     width: 34px; height: 34px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #6be348, #2cad1b);
+    background: linear-gradient(135deg, #8f7ff0, #4b3dc4);
     display: flex; align-items: center; justify-content: center;
-    color: #10200d;
+    color: #ffffff;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1rem;
-    box-shadow: 0 4px 12px -4px rgba(85,212,47,.35);
+    box-shadow: 0 4px 12px -4px rgba(99,85,224,.35);
   }
   .cs-note p {
     margin: 0;
@@ -461,7 +461,7 @@
   }
   .cs-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: linear-gradient(135deg, #4cc026, #2c8c14);
+    background: linear-gradient(135deg, #7d6ee8, #4b3dc4);
     color: #fff;
     text-decoration: none;
     font-family: 'DM Sans', sans-serif;
@@ -469,10 +469,10 @@
     font-size: 1rem;
     padding: 0.95rem 2.2rem;
     border-radius: 100px;
-    box-shadow: 0 8px 20px -6px rgba(59,168,30,.4);
+    box-shadow: 0 8px 20px -6px rgba(99,85,224,.4);
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   }
-  .cs-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -6px rgba(59,168,30,.5); }
+  .cs-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -6px rgba(99,85,224,.5); }
   .cs-cta-alt {
     display: block;
     margin-top: 1.2rem;
@@ -494,22 +494,22 @@
      FOOTER
      ============================================================ */
   .cs-footer {
-    border-top: 1px solid #dfe7dc;
+    border-top: 1px solid #e0dcf0;
     padding: 1.75rem 2rem;
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 1rem;
     max-width: 1080px;
     margin: 0 auto;
   }
-  .cs-footer-copy { font-size: 0.8rem; color: #8b948a; }
+  .cs-footer-copy { font-size: 0.8rem; color: #9b93b8; }
   .cs-footer-links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
   .cs-footer-links a {
     font-size: 0.8rem;
-    color: #8b948a;
+    color: #9b93b8;
     text-decoration: none;
     transition: color 0.2s;
   }
-  .cs-footer-links a:hover { color: #3ba81e; }
+  .cs-footer-links a:hover { color: #6355e0; }
 
   /* ---- responsive ---- */
   @media (max-width: 760px) {
@@ -626,7 +626,7 @@
       <div class="cs-step-card">
         <div class="cs-step-tags"><span class="cs-chip">Automaticky</span></div>
         <h4>Notifikácia do chatu</h4>
-        <p>Do firemného chatu odíde správa „incident zaevidovaný“ — tím vidí nové hlásenie okamžite, na jednom mieste.</p>
+        <p>Do firemného chatu odíde správa „incident zaevidovaný" — tím vidí nové hlásenie okamžite, na jednom mieste.</p>
       </div>
     </div>
 
@@ -635,7 +635,7 @@
       <div class="cs-step-card">
         <div class="cs-step-tags"><span class="cs-chip">Automaticky</span></div>
         <h4>Priebežné updaty vo vlákne</h4>
-        <p>Keď sa tiket posunie (napr. do „in progress“) alebo sa doplní predpokladaný čas vyriešenia, do vlákna pôvodnej správy pribudne update. Celý priebeh je transparentný.</p>
+        <p>Keď sa tiket posunie (napr. do „in progress") alebo sa doplní predpokladaný čas vyriešenia, do vlákna pôvodnej správy pribudne update. Celý priebeh je transparentný.</p>
       </div>
     </div>
 
@@ -644,7 +644,7 @@
       <div class="cs-step-card">
         <div class="cs-step-tags"><span class="cs-chip">Automaticky</span></div>
         <h4>Oznámenie o vyriešení</h4>
-        <p>Po uzavretí tiketu odíde do vlákna informácia, že incident je vyriešený. Nikto sa nemusí pýtať „tak čo, hotovo?“.</p>
+        <p>Po uzavretí tiketu odíde do vlákna informácia, že incident je vyriešený. Nikto sa nemusí pýtať „tak čo, hotovo?".</p>
       </div>
     </div>
 
